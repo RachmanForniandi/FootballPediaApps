@@ -2,26 +2,23 @@ package com.rachmanforniandi.footballpediaapps
 
 import android.support.v7.app.AppCompatActivity
 import android.os.Bundle
+import android.support.v7.widget.DividerItemDecoration
 import android.support.v7.widget.LinearLayoutManager
-import android.widget.Toast
-import com.rachmanforniandi.footballpediaapps.R.array.club_description_detail
-import com.rachmanforniandi.footballpediaapps.R.id.football_club_list
 import com.rachmanforniandi.recyclerviewkotlin.FootBallTeamAdapter
 import com.rachmanforniandi.recyclerviewkotlin.TeamPerItem
-import kotlinx.android.synthetic.main.activity_main.*
-import org.jetbrains.anko.indeterminateProgressDialog
-import org.jetbrains.anko.startActivity
+import org.jetbrains.anko.*
+import org.jetbrains.anko.recyclerview.v7.recyclerView
 
 class MainActivity : AppCompatActivity() {
 
-    private var teamPerItems:MutableList<TeamPerItem> = mutableListOf()
+    companion object {
+        const val PARCELABLE_EACH_ITEM_DATA = "TeamPerItem"
+    }
 
+    var teamPerItems:MutableList<TeamPerItem> = mutableListOf()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-
-        //val list = findViewById<RecyclerView>(R.id.football_club_list)
         val progressDialog = indeterminateProgressDialog("Loading...")
 
         progressDialog.show()
@@ -29,27 +26,32 @@ class MainActivity : AppCompatActivity() {
         initData()
 
         progressDialog.dismiss()
+        UIMainActivity(teamPerItems).setContentView(this)
+    }
 
-        football_club_list.layoutManager = LinearLayoutManager(this)
-        football_club_list.adapter = FootBallTeamAdapter(this, teamPerItems){
-            /*val toast = Toast.makeText(applicationContext, it.name, Toast.LENGTH_SHORT)
-            toast.show()*/
-            itemClicked(it)
+    inner class UIMainActivity(val items: List<TeamPerItem>) :AnkoComponent<MainActivity>{
+        override fun createView(ui: AnkoContext<MainActivity>)= with(ui){
+            verticalLayout {
+                lparams(matchParent,wrapContent)
+
+                recyclerView {
+                    layoutManager = LinearLayoutManager(context)
+                    addItemDecoration(DividerItemDecoration(context,1))
+                    adapter = FootBallTeamAdapter(items){
+                        startActivity<DetailTeamActivity>(PARCELABLE_EACH_ITEM_DATA to it)
+                    }
+                }
+
+            }
         }
 
     }
 
-    private fun itemClicked(perItem: TeamPerItem) {
-        startActivity<DetailTeamActivity>(DetailTeamActivity.TEAM_NAME to  perItem.name,
-                DetailTeamActivity.TEAM_SYMBOL to perItem.logoClub,
-                DetailTeamActivity.TEAM_DESCRIPTION to perItem.descriptionDetail)
-
-    }
 
     private fun initData(){
         val nameOfTeam = resources.getStringArray(R.array.club_name)
         val imageTeam = resources.obtainTypedArray(R.array.club_image)
-        val detailTeam = resources.getStringArray(club_description_detail)
+        val detailTeam = resources.getStringArray(R.array.club_description_detail)
 
         teamPerItems.clear()
 
@@ -61,3 +63,5 @@ class MainActivity : AppCompatActivity() {
         imageTeam.recycle()
     }
 }
+
+

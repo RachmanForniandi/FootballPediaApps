@@ -5,33 +5,39 @@ import android.support.v7.widget.RecyclerView
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
+import android.widget.TextView
 import com.bumptech.glide.Glide
+import com.rachmanforniandi.footballpediaapps.FootballClubUI
 import com.rachmanforniandi.footballpediaapps.R
-import kotlinx.android.synthetic.main.item_list.view.*
 import kotlinx.android.extensions.LayoutContainer
+import org.jetbrains.anko.AnkoContext
 
-class FootBallTeamAdapter(private val context: Context, private val teamPerItems: List<TeamPerItem>,
-                          private val listener:(TeamPerItem)->Unit):
+class FootBallTeamAdapter(val items:List<TeamPerItem>, val listener: (TeamPerItem) -> Unit):
         RecyclerView.Adapter<FootBallTeamAdapter.ViewHolder>() {
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) =
-            ViewHolder(LayoutInflater.from(context).inflate(R.layout.item_list, parent,
-                    false))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(FootballClubUI().createView(AnkoContext.Companion.create(parent.context,parent)))
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bindItem(teamPerItems[position], listener)
+        holder.bindItem(items[position],listener)
     }
 
-    override fun getItemCount(): Int = teamPerItems.size
+    override fun getItemCount()= items.size
 
 
-    class ViewHolder(override val containerView: View): RecyclerView.ViewHolder(containerView),
+    inner class ViewHolder(override val containerView: View): RecyclerView.ViewHolder(containerView),
             LayoutContainer{
 
+        val image = itemView.findViewById<ImageView>(FootballClubUI.fc_symbol)
+        val name = itemView.findViewById<TextView>(FootballClubUI.fc_name)
+
         fun bindItem(teamPerItem: TeamPerItem, listener: (TeamPerItem) -> Unit) {
-            itemView.football_club_name.text = teamPerItem.name;
-            Glide.with(containerView).load(teamPerItem.logoClub).into(itemView.img_football_club)
+
+            Glide.with(itemView.context)
+                    .load(teamPerItem.logoClub)
+                    .into(image)
+            name.text = teamPerItem.name;
 
             containerView.setOnClickListener {
                 listener(teamPerItem)
