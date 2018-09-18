@@ -9,6 +9,8 @@ import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.*
 import com.rachmanforniandi.footballpediaapps.R
+import com.rachmanforniandi.footballpediaapps.adapter.FootBallMatchAdapter
+import com.rachmanforniandi.footballpediaapps.models.EventsItem
 import com.rachmanforniandi.footballpediaapps.models.LeagueFeedback
 import com.rachmanforniandi.footballpediaapps.models.LeaguesPerItem
 import com.rachmanforniandi.footballpediaapps.utils.invisible
@@ -20,18 +22,27 @@ import org.jetbrains.anko.recyclerview.v7.recyclerView
 class FootballMatchActivity:AppCompatActivity(),FootballMatchView {
 
     lateinit var presenter: FootballMatchPresenter
+    lateinit var adapter: FootBallMatchAdapter
+
     lateinit var spinner: Spinner
     lateinit var progressBar: ProgressBar
     lateinit var recyclerView: RecyclerView
 
-    var leagues:MutableList<LeaguesPerItem> = mutableListOf()
+    var events:MutableList<EventsItem> = mutableListOf()
+
+    companion object {
+        val ID_BottomNav = 1
+    }
 
     override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
         super.onCreate(savedInstanceState, persistentState)
 
         buildLayout()
         buildScopeArea()
+        loadFakeData()
     }
+
+
 
     override fun loadingView() {
         progressBar.visible()
@@ -72,7 +83,9 @@ class FootballMatchActivity:AppCompatActivity(),FootballMatchView {
             relativeLayout {
                 recyclerView = recyclerView {
                     layoutManager = LinearLayoutManager(ctx)
-                }.lparams(matchParent, matchParent)
+                }.lparams(matchParent, matchParent){
+                    topOf(ID_BottomNav)
+                }
 
 
                 progressBar = progressBar {
@@ -81,6 +94,7 @@ class FootballMatchActivity:AppCompatActivity(),FootballMatchView {
                 }
 
                 bottomNavigationView {
+                    id = ID_BottomNav
                     backgroundColor = Color.GRAY
 
                     menu.apply {
@@ -107,13 +121,22 @@ class FootballMatchActivity:AppCompatActivity(),FootballMatchView {
 
     private fun buildScopeArea() {
         presenter = FootballMatchPresenter(this)
+        adapter = FootBallMatchAdapter(events)
 
         presenter.getAllArchiveLeagueInfo()
+        recyclerView.adapter = adapter
     }
 
-
-
-
-
-
+    fun loadFakeData() {
+        for (i in 1..9) {
+            val item = EventsItem()
+            item.dateEvent = "2018-09-0${i}"
+            item.strHomeTeam = "TottenHam Hotspur"
+            item.strAwayTeam = "Liverpool"
+            item.intHomeScore = "1"
+            item.intAwayScore = "2"
+            events.add(item)
+        }
+        adapter.notifyDataSetChanged()
+    }
 }

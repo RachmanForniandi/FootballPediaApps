@@ -3,33 +3,12 @@ package com.rachmanforniandi.footballpediaapps
 import android.graphics.Color
 import android.graphics.Typeface
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.support.v7.app.AppCompatActivity
-import android.view.Gravity
 import android.view.MenuItem
-import android.view.View
-import android.widget.ImageView
-import android.widget.TextView
 import com.bumptech.glide.Glide
-import com.rachmanforniandi.recyclerviewkotlin.TeamPerItem
-import kotlinx.android.synthetic.main.notification_template_lines_media.view.*
 import org.jetbrains.anko.*
 
 class DetailTeamActivity :AppCompatActivity(){
-
-    /*companion object {
-        const val TEAM_NAME = "name"
-        const val TEAM_SYMBOL = "symbol"
-        const val TEAM_DESCRIPTION = "description"
-    }
-
-    private var team_name:  String=""
-    private var team_symbol:  Int = 0
-    private var team_description:  String=""
-
-    lateinit var teamName_tv : TextView
-    lateinit var teamSymbol_img: ImageView
-    lateinit var teamDescriptionDetail_tv :TextView*/
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

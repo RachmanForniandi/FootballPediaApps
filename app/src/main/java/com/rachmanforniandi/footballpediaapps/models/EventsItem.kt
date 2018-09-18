@@ -28,7 +28,7 @@ class EventsItem{
     var strHomeLineupForward: String? = null
 
     @SerializedName("strTVStation")
-    var strTVStation: Any? = null
+    var strTVStation: String? = null
 
     @SerializedName("strHomeGoalDetails")
     var strHomeGoalDetails: String? = null
@@ -58,7 +58,7 @@ class EventsItem{
     var dateEvent: String? = null
 
     @SerializedName("strCountry")
-    var strCountry: Any? = null
+    var strCountry: String? = null
 
     @SerializedName("strAwayTeam")
     var strAwayTeam: String? = null
@@ -73,7 +73,7 @@ class EventsItem{
     var strHomeFormation: String? = null
 
     @SerializedName("strMap")
-    var strMap: Any? = null
+    var strMap: String? = null
 
     @SerializedName("idAwayTeam")
     var idAwayTeam: String? = null
@@ -82,19 +82,19 @@ class EventsItem{
     var strAwayRedCards: String? = null
 
     @SerializedName("strBanner")
-    var strBanner: Any? = null
+    var strBanner: String? = null
 
     @SerializedName("strFanart")
-    var strFanart: Any? = null
+    var strFanart: String? = null
 
     @SerializedName("strDescriptionEN")
-    var strDescriptionEN: Any? = null
+    var strDescriptionEN: String? = null
 
     @SerializedName("strResult")
-    var strResult: Any? = null
+    var strResult: String? = null
 
     @SerializedName("strCircuit")
-    var strCircuit: Any? = null
+    var strCircuit: String? = null
 
     @SerializedName("intAwayShots")
     var intAwayShots: String? = null
@@ -145,7 +145,7 @@ class EventsItem{
     var strHomeTeam: String? = null
 
     @SerializedName("strThumb")
-    var strThumb: Any? = null
+    var strThumb: String? = null
 
     @SerializedName("strLeague")
     var strLeague: String? = null
@@ -154,8 +154,8 @@ class EventsItem{
     var intAwayScore: String? = null
 
     @SerializedName("strCity")
-    var strCity: Any? = null
+    var strCity: String? = null
 
     @SerializedName("strPoster")
-    var strPoster: Any? = null
+    var strPoster: String? = null
 }
