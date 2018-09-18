@@ -8,9 +8,4 @@ class LeagueFeedback {
     @SerializedName("leagues")
     var leagues: List<LeaguesPerItem>? = null
 
-    override fun toString(): String {
-        return "LeagueFeedback{" +
-                "leagues = '" + leagues + '\''.toString() +
-                "}"
-    }
 }

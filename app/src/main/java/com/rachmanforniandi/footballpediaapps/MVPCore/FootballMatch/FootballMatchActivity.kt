@@ -4,6 +4,8 @@ import android.graphics.Color
 import android.os.Bundle
 import android.os.PersistableBundle
 import android.support.v7.app.AppCompatActivity
+import android.support.v7.widget.LinearLayoutManager
+import android.support.v7.widget.RecyclerView
 import android.view.View
 import android.widget.*
 import com.rachmanforniandi.footballpediaapps.R
@@ -13,12 +15,14 @@ import com.rachmanforniandi.footballpediaapps.utils.invisible
 import com.rachmanforniandi.footballpediaapps.utils.visible
 import org.jetbrains.anko.*
 import org.jetbrains.anko.design.bottomNavigationView
+import org.jetbrains.anko.recyclerview.v7.recyclerView
 
 class FootballMatchActivity:AppCompatActivity(),FootballMatchView {
 
     lateinit var presenter: FootballMatchPresenter
     lateinit var spinner: Spinner
     lateinit var progressBar: ProgressBar
+    lateinit var recyclerView: RecyclerView
 
     var leagues:MutableList<LeaguesPerItem> = mutableListOf()
 
@@ -31,10 +35,12 @@ class FootballMatchActivity:AppCompatActivity(),FootballMatchView {
 
     override fun loadingView() {
         progressBar.visible()
+        recyclerView.invisible()
     }
 
     override fun hideLoadingView() {
         progressBar.invisible()
+        recyclerView.visible()
     }
 
     override fun showLeagueList(data: LeagueFeedback) {
@@ -64,7 +70,10 @@ class FootballMatchActivity:AppCompatActivity(),FootballMatchView {
                 }
             }
             relativeLayout {
-                lparams(matchParent, matchParent)
+                recyclerView = recyclerView {
+                    layoutManager = LinearLayoutManager(ctx)
+                }.lparams(matchParent, matchParent)
+
 
                 progressBar = progressBar {
                 }.lparams{
