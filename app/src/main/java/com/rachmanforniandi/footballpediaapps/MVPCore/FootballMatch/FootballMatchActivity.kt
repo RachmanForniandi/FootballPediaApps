@@ -39,7 +39,7 @@ class FootballMatchActivity:AppCompatActivity(),FootballMatchView {
 
         buildLayout()
         buildScopeArea()
-        loadFakeData()
+        //loadFakeData()
     }
 
 
@@ -62,9 +62,16 @@ class FootballMatchActivity:AppCompatActivity(),FootballMatchView {
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 val item = spinner.selectedItem as LeaguesPerItem
-                toast(item.idLeague.toString())
+                presenter.getPreviousEvents(item.idLeague.toString())
             }
         }
+    }
+
+    override fun showPrevListEvent(data: List<EventsItem>) {
+        events.clear()
+        events.addAll(data)
+        adapter.notifyDataSetChanged()
+        recyclerView.scrollToPosition(0)
     }
 
     private fun buildLayout() {
@@ -131,7 +138,7 @@ class FootballMatchActivity:AppCompatActivity(),FootballMatchView {
         recyclerView.adapter = adapter
     }
 
-    fun loadFakeData() {
+    /*fun loadFakeData() {
         for (i in 1..9) {
             val item = EventsItem()
             item.dateEvent = "2018-09-0${i}"
@@ -143,5 +150,5 @@ class FootballMatchActivity:AppCompatActivity(),FootballMatchView {
             events.add(item)
         }
         adapter.notifyDataSetChanged()
-    }
+    }*/
 }

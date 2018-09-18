@@ -1,6 +1,7 @@
 package com.rachmanforniandi.footballpediaapps.MVPCore.FootballMatch
 
 import com.google.gson.Gson
+import com.rachmanforniandi.footballpediaapps.models.EventsFeedback
 import com.rachmanforniandi.footballpediaapps.models.LeagueFeedback
 import com.rachmanforniandi.footballpediaapps.networkUnits.APIHandler
 import com.rachmanforniandi.footballpediaapps.networkUnits.SourceInfoLeague
@@ -25,6 +26,23 @@ class FootballMatchPresenter(val view: FootballMatchView) {
             uiThread {
                 view.hideLoadingView()
                 view.showLeagueList(leagueData)
+            }
+        }
+    }
+
+    fun getPreviousEvents(id: String){
+        view.loadingView()
+
+        doAsync {
+            val leagueData = gson.fromJson(apiHandler
+                    .doRequest(SourceInfoLeague.getPrevEventsLeague(id)),
+                    EventsFeedback::class.java)
+
+
+
+            uiThread {
+                view.hideLoadingView()
+                view.showPrevListEvent(leagueData.events!!)
             }
         }
     }
