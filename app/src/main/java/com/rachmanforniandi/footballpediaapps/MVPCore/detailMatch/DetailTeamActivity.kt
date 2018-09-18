@@ -1,4 +1,4 @@
-package com.rachmanforniandi.footballpediaapps
+package com.rachmanforniandi.footballpediaapps.MVPCore.detailMatch
 
 import android.graphics.Color
 import android.graphics.Typeface

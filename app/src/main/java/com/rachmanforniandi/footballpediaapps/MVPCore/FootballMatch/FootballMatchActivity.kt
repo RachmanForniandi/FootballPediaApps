@@ -119,9 +119,13 @@ class FootballMatchActivity:AppCompatActivity(),FootballMatchView {
         }
     }
 
+    fun itemClicked(item: EventsItem){
+        toast("item: ${item.strEvent}")
+    }
+
     private fun buildScopeArea() {
         presenter = FootballMatchPresenter(this)
-        adapter = FootBallMatchAdapter(events)
+        adapter = FootBallMatchAdapter(events,{item:EventsItem ->itemClicked(item)})
 
         presenter.getAllArchiveLeagueInfo()
         recyclerView.adapter = adapter
@@ -131,10 +135,11 @@ class FootballMatchActivity:AppCompatActivity(),FootballMatchView {
         for (i in 1..9) {
             val item = EventsItem()
             item.dateEvent = "2018-09-0${i}"
-            item.strHomeTeam = "TottenHam Hotspur"
+            item.strHomeTeam = "Tottenham Hotspur"
             item.strAwayTeam = "Liverpool"
             item.intHomeScore = "1"
             item.intAwayScore = "2"
+            item.strEvent = "Tottenham Hotspur vs Liverpool"
             events.add(item)
         }
         adapter.notifyDataSetChanged()

@@ -7,13 +7,13 @@ import android.support.v7.widget.RecyclerView
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
+import android.widget.AdapterView
 import android.widget.TextView
-import com.rachmanforniandi.footballpediaapps.dp
 import com.rachmanforniandi.footballpediaapps.R
 import com.rachmanforniandi.footballpediaapps.models.EventsItem
 import org.jetbrains.anko.*
 
-class FootBallMatchAdapter(val items:List<EventsItem>):
+class FootBallMatchAdapter(val items:List<EventsItem>,val clickListener: (EventsItem)->Unit):
         RecyclerView.Adapter<FootBallMatchAdapter.ViewHolder>() {
 
 
@@ -22,7 +22,7 @@ class FootBallMatchAdapter(val items:List<EventsItem>):
     override fun getItemCount()= items.size
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int){
-        holder.bindItem(items[position])
+        holder.bindItem(items[position],clickListener)
     }
 
 
@@ -34,12 +34,14 @@ class FootBallMatchAdapter(val items:List<EventsItem>):
         val nameAwayTeam: TextView = view.findViewById(ID_AWAY_TEAM)
         val panelAwayScore: TextView = view.findViewById(ID_AWAY_SCORE)
 
-        fun bindItem(item: EventsItem) {
+        fun bindItem(item: EventsItem,clickListener: (EventsItem) -> Unit) {
             matchDate.text = item.dateEvent
             nameHomeTeam.text = item.strHomeTeam
             panelHomeScore.text = item.intHomeScore
             nameAwayTeam.text = item.strAwayTeam
             panelAwayScore.text = item.intAwayScore
+
+            itemView.setOnClickListener { clickListener(item) }
         }
     }
 
