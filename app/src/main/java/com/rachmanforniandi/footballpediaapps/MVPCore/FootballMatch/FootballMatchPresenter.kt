@@ -42,7 +42,12 @@ class FootballMatchPresenter(val view: FootballMatchView) {
 
             uiThread {
                 view.hideLoadingView()
-                view.showPrevListEvent(leagueData.events!!)
+                //view.showPrevListEvent(leagueData.events!!)
+                try {
+                    view.showPrevListEvent(leagueData.events!!)
+                }catch (e: NullPointerException){
+                    view.emptyData()
+                }
             }
         }
     }
