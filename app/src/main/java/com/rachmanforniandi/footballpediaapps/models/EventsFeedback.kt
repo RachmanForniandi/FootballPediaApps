@@ -4,8 +4,6 @@ package com.rachmanforniandi.footballpediaapps.models
 import com.google.gson.annotations.SerializedName
 
 
-class EventsFeedback{
+data class EventsFeedback(val events: List<EventsItem>?)
 
-    @SerializedName("events")
-    var events: List<EventsItem>? = null
-}
+

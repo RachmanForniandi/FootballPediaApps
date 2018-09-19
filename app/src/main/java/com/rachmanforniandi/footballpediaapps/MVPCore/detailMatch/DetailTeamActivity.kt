@@ -1,79 +1,46 @@
 package com.rachmanforniandi.footballpediaapps.MVPCore.detailMatch
 
-import android.graphics.Color
-import android.graphics.Typeface
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import android.view.MenuItem
-import com.bumptech.glide.Glide
+import com.rachmanforniandi.footballpediaapps.models.EventsItem
 import org.jetbrains.anko.*
+
+const val INTENT_TO_DETAIL = "INTENT_TO_DETAIL"
 
 class DetailTeamActivity :AppCompatActivity(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        val item = intent.getParcelableExtra<TeamPerItem>(MainActivity.PARCELABLE_EACH_ITEM_DATA)
-        UIDetailActivityUI(item).setContentView(this)
-
-        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        buildLayout(intent.getParcelableExtra<EventsItem>(INTENT_TO_DETAIL))
+        buildEnv()
 
     }
+
+
+
 
     override fun onOptionsItemSelected(item: MenuItem?): Boolean {
         return if (item?.itemId == android.R.id.home){
             finish()
             true
         }else{
-        super.onOptionsItemSelected(item)
+        return super.onOptionsItemSelected(item)
     }
 }
-
-    inner class UIDetailActivityUI(val item: TeamPerItem):AnkoComponent<DetailTeamActivity> {
-        val id_view_team = 1
-        val id_symbol_team = 2
-        val id_name_team =3
-
-        override fun createView(ui: AnkoContext<DetailTeamActivity>)= with(ui) {
-            scrollView {
-                relativeLayout {
-                    lparams(matchParent, wrapContent)
-
-                    view {
-                        id = id_view_team
-                        setBackgroundColor(Color.rgb(126, 203, 238))
-                    }.lparams(matchParent,dip(100))
-
-                    imageView {
-                        id = id_symbol_team
-                        Glide.with(this)
-                                .load(item.logoClub)
-                                .into(this)
-                    }.lparams(dip(120),dip(120)){
-                        centerHorizontally()
-                        topMargin = dip(120)
-                    }
-
-                    textView {
-                        id = id_name_team
-                        text = item.name
-                        textSize = 20f
-                        setTypeface(null, Typeface.BOLD)
-                    }.lparams {
-                        below(id_symbol_team)
-                        centerHorizontally()
-                    }
-
-                    textView {
-                        padding = dip(16)
-                        text = item.descriptionDetail
-                    }.lparams {
-                        below(id_name_team)
-                    }
-                }
+    fun buildLayout(item: EventsItem) {
+        relativeLayout {
+            textView{
+                text = item.strEvent
+            }.lparams{
+                centerInParent()
             }
-
         }
+    }
+    private fun buildEnv() {
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+        supportActionBar?.title = "Match Detail"
     }
 
 }

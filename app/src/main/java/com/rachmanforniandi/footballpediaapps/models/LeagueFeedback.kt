@@ -3,9 +3,5 @@ package com.rachmanforniandi.footballpediaapps.models
 import com.google.gson.annotations.SerializedName
 
 
-class LeagueFeedback {
+data class LeagueFeedback(var leagues: List<LeaguesPerItem>? )
 
-    @SerializedName("leagues")
-    var leagues: List<LeaguesPerItem>? = null
-
-}

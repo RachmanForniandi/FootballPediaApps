@@ -1,14 +1,18 @@
 package com.rachmanforniandi.footballpediaapps.MVPCore.FootballMatch
 
 import android.graphics.Color
+import android.graphics.PorterDuff
 import android.os.Bundle
 import android.os.PersistableBundle
+import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
 import android.support.v7.widget.RecyclerView
 import android.view.Gravity
 import android.view.View
 import android.widget.*
+import com.rachmanforniandi.footballpediaapps.MVPCore.detailMatch.DetailTeamActivity
+import com.rachmanforniandi.footballpediaapps.MVPCore.detailMatch.INTENT_TO_DETAIL
 import com.rachmanforniandi.footballpediaapps.R
 import com.rachmanforniandi.footballpediaapps.adapter.FootBallMatchAdapter
 import com.rachmanforniandi.footballpediaapps.models.EventsItem
@@ -34,9 +38,7 @@ class FootballMatchActivity:AppCompatActivity(),FootballMatchView {
 
     var events:MutableList<EventsItem> = mutableListOf()
 
-    companion object {
-        val ID_BottomNav = 1
-    }
+    private val ID_BottomNav = 1
 
     override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
         super.onCreate(savedInstanceState, persistentState)
@@ -97,7 +99,8 @@ class FootballMatchActivity:AppCompatActivity(),FootballMatchView {
     }
 
     fun itemClicked(item: EventsItem){
-        toast("item: ${item.strEvent}")
+        //toast("item: ${item.strEvent}")
+        startActivity<DetailTeamActivity>(INTENT_TO_DETAIL to item)
     }
 
     private fun buildLayout() {
@@ -129,6 +132,7 @@ class FootballMatchActivity:AppCompatActivity(),FootballMatchView {
                 }.lparams{
                     centerInParent()
                 }
+
                 recyclerView = recyclerView {
                     layoutManager = LinearLayoutManager(ctx)
                 }.lparams(matchParent, matchParent){
@@ -137,6 +141,10 @@ class FootballMatchActivity:AppCompatActivity(),FootballMatchView {
 
 
                 progressBar = progressBar {
+                    indeterminateDrawable.setColorFilter(
+                            ContextCompat.getColor(ctx, R.color.colorPrimary),
+                            PorterDuff.Mode.SRC_IN
+                    )
                 }.lparams{
                     centerInParent()
                 }
@@ -164,11 +172,11 @@ class FootballMatchActivity:AppCompatActivity(),FootballMatchView {
                 }.lparams(matchParent, wrapContent){
                     alignParentBottom()
                 }
-            }
+            }.lparams(matchParent, matchParent)
         }
     }
 
-    private fun buildScopeArea() {
+    fun buildScopeArea() {
         presenter = FootballMatchPresenter(this)
         adapter = FootBallMatchAdapter(events,{item:EventsItem ->itemClicked(item)})
 

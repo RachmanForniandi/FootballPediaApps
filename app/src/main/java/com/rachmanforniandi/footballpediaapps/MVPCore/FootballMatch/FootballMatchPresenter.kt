@@ -54,7 +54,7 @@ class FootballMatchPresenter(val view: FootballMatchView) {
     }
 
     fun getNextEvents(id: String){
-        match =2
+        match = 2
         view.loadingView()
 
         doAsync {

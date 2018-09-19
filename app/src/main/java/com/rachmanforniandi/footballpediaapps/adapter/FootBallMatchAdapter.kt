@@ -7,18 +7,17 @@ import android.support.v7.widget.RecyclerView
 import android.view.Gravity
 import android.view.View
 import android.view.ViewGroup
-import android.widget.AdapterView
 import android.widget.TextView
 import com.rachmanforniandi.footballpediaapps.R
 import com.rachmanforniandi.footballpediaapps.models.EventsItem
 import com.rachmanforniandi.footballpediaapps.utils.FormatDateTime
 import org.jetbrains.anko.*
 
-class FootBallMatchAdapter(val items:List<EventsItem>,val clickListener: (EventsItem)->Unit):
+class FootBallMatchAdapter(val items:List<EventsItem>, val clickListener: (EventsItem)->Unit):
         RecyclerView.Adapter<FootBallMatchAdapter.ViewHolder>() {
 
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(FootballClubUI().createView(AnkoContext.Companion.create(parent.context,parent)))
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(FootballClubUI().createView(AnkoContext.create(parent.context,parent)))
 
     override fun getItemCount()= items.size
 
