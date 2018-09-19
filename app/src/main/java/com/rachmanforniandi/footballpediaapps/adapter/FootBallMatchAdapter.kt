@@ -11,6 +11,7 @@ import android.widget.AdapterView
 import android.widget.TextView
 import com.rachmanforniandi.footballpediaapps.R
 import com.rachmanforniandi.footballpediaapps.models.EventsItem
+import com.rachmanforniandi.footballpediaapps.utils.FormatDateTime
 import org.jetbrains.anko.*
 
 class FootBallMatchAdapter(val items:List<EventsItem>,val clickListener: (EventsItem)->Unit):
@@ -35,7 +36,7 @@ class FootBallMatchAdapter(val items:List<EventsItem>,val clickListener: (Events
         val panelAwayScore: TextView = view.findViewById(ID_AWAY_SCORE)
 
         fun bindItem(item: EventsItem,clickListener: (EventsItem) -> Unit) {
-            matchDate.text = item.dateEvent
+            matchDate.text = FormatDateTime.getLongDate(item.dateEvent!!)
             nameHomeTeam.text = item.strHomeTeam
             panelHomeScore.text = item.intHomeScore
             nameAwayTeam.text = item.strAwayTeam
