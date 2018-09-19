@@ -16,7 +16,6 @@ import com.rachmanforniandi.footballpediaapps.models.LeagueFeedback
 import com.rachmanforniandi.footballpediaapps.models.LeaguesPerItem
 import com.rachmanforniandi.footballpediaapps.utils.invisible
 import com.rachmanforniandi.footballpediaapps.utils.visible
-import kotlinx.android.synthetic.main.notification_template_lines_media.view.*
 import org.jetbrains.anko.*
 import org.jetbrains.anko.design.bottomNavigationView
 import org.jetbrains.anko.recyclerview.v7.recyclerView
@@ -30,8 +29,8 @@ class FootballMatchActivity:AppCompatActivity(),FootballMatchView {
     lateinit var progressBar: ProgressBar
     lateinit var recyclerView: RecyclerView
 
-    lateinit var emptyData: LinearLayout
-    lateinit var  league: LeaguesPerItem
+    lateinit var emptyDataStage: LinearLayout
+    lateinit var league: LeaguesPerItem
 
     var events:MutableList<EventsItem> = mutableListOf()
 
@@ -52,18 +51,19 @@ class FootballMatchActivity:AppCompatActivity(),FootballMatchView {
     override fun loadingView() {
         progressBar.visible()
         recyclerView.invisible()
-        emptyData.invisible()
+        emptyDataStage.invisible()
     }
 
     override fun hideLoadingView() {
         progressBar.invisible()
         recyclerView.visible()
-        emptyData.invisible()
+        emptyDataStage.invisible()
     }
 
-    override fun emptyData(){
+    override fun showEmptyData(){
+        progressBar.invisible()
         recyclerView.invisible()
-        emptyData.visible()
+        emptyDataStage.visible()
     }
 
     override fun showLeagueList(data: LeagueFeedback) {
@@ -74,16 +74,30 @@ class FootballMatchActivity:AppCompatActivity(),FootballMatchView {
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 league = spinner.selectedItem as LeaguesPerItem
-                presenter.getPreviousEvents(league.idLeague!!)
+                //presenter.getPreviousEvents(league.idLeague!!)
+
+                when(presenter.match){
+                    1-> presenter.getPreviousEvents(league.idLeague!!)
+                    2-> presenter.getNextEvents(league.idLeague!!)
+                }
             }
         }
     }
 
     override fun showPrevListEvent(data: List<EventsItem>) {
-        events.clear()
+        /*events.clear()
         events.addAll(data)
         adapter.notifyDataSetChanged()
-        recyclerView.scrollToPosition(0)
+        recyclerView.scrollToPosition(0)*/
+        showEventListData(data)
+    }
+
+    override fun showNextListEvent(data: List<EventsItem>) {
+        showEventListData(data)
+    }
+
+    fun itemClicked(item: EventsItem){
+        toast("item: ${item.strEvent}")
     }
 
     private fun buildLayout() {
@@ -100,7 +114,7 @@ class FootballMatchActivity:AppCompatActivity(),FootballMatchView {
                 }
             }
             relativeLayout {
-                emptyData= linearLayout {
+                emptyDataStage= linearLayout {
                     orientation = LinearLayout.VERTICAL
 
                     imageView {
@@ -142,7 +156,8 @@ class FootballMatchActivity:AppCompatActivity(),FootballMatchView {
                         add("Next Match")
                                 .setIcon(R.drawable.right_arrow)
                                 .setOnMenuItemClickListener {
-                                    toast("Coming up next..")
+                                    //toast("Coming up next..")
+                                    presenter.getNextEvents(league.idLeague!!)
                                     false
                                 }
                     }
@@ -153,16 +168,19 @@ class FootballMatchActivity:AppCompatActivity(),FootballMatchView {
         }
     }
 
-    fun itemClicked(item: EventsItem){
-        toast("item: ${item.strEvent}")
-    }
-
     private fun buildScopeArea() {
         presenter = FootballMatchPresenter(this)
         adapter = FootBallMatchAdapter(events,{item:EventsItem ->itemClicked(item)})
 
         presenter.getAllArchiveLeagueInfo()
         recyclerView.adapter = adapter
+    }
+
+    fun showEventListData(data: List<EventsItem>){
+        events.clear()
+        events.addAll(data)
+        adapter.notifyDataSetChanged()
+        recyclerView.scrollToPosition(0)
     }
 
     /*fun loadFakeData() {

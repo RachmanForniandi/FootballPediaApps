@@ -12,4 +12,9 @@ object SourceInfoLeague {
         return "${BuildConfig.BASE_URL}${BuildConfig.TSDB_API_KEY}" +
                 "/eventspastleague.php?id=${id}"
     }
+
+    fun getNextEventsLeague(id: String): String{
+        return "${BuildConfig.BASE_URL}${BuildConfig.TSDB_API_KEY}" +
+                "/eventsnexttleague.php?id=${id}"
+    }
 }
