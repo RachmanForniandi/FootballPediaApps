@@ -1,14 +1,8 @@
 package com.rachmanforniandi.footballpediaapps.models
 
-data class LeaguesPerItem(
-        var idLeague: String?,
-        var strLeague: String?,
-        var strSport: String?,
-        var strLeagueAlternate: String?) {
-
+data class LeaguesPerItem(val idLeague: String?, val strLeague: String?) {
 
     override fun toString(): String{
         return strLeague.toString()
     }
 }
-

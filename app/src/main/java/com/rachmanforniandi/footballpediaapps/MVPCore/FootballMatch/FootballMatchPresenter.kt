@@ -23,8 +23,6 @@ class FootballMatchPresenter(val view: FootballMatchView) {
                     .doRequest(SourceInfoLeague.getAllArchiveLeagueInfo()),
                     LeagueFeedback::class.java)
 
-            print(leagueData)
-
             uiThread {
                 view.hideLoadingView()
                 view.showLeagueList(leagueData)
@@ -33,7 +31,7 @@ class FootballMatchPresenter(val view: FootballMatchView) {
     }
 
     fun getPreviousEvents(id: String){
-        match =1
+        match = 1
         view.loadingView()
 
         doAsync {
@@ -43,7 +41,7 @@ class FootballMatchPresenter(val view: FootballMatchView) {
 
             uiThread {
                 view.hideLoadingView()
-                //view.showPrevListEvent(leagueData.events!!)
+
                 try {
                     view.showPrevListEvent(leagueData.events!!)
                 }catch (e: NullPointerException){
@@ -60,13 +58,14 @@ class FootballMatchPresenter(val view: FootballMatchView) {
         doAsync {
             val leagueData = gson.fromJson(apiHandler
                     .doRequest(SourceInfoLeague.getNextEventsLeague(id)),
-                    EventsFeedback::class.java)
+                    EventsFeedback::class.java
+            )
 
             uiThread {
                 view.hideLoadingView()
-                //view.showPrevListEvent(leagueData.events!!)
+
                 try {
-                    view.showNextListEvent(leagueData.events!!)
+                    view.showPrevListEvent(leagueData.events!!)
                 }catch (e: NullPointerException){
                     view.showEmptyData()
                 }

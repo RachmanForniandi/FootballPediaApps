@@ -4,6 +4,7 @@ import com.rachmanforniandi.footballpediaapps.models.EventsItem
 import com.rachmanforniandi.footballpediaapps.models.LeagueFeedback
 
 interface FootballMatchView {
+
     fun loadingView()
     fun hideLoadingView()
     fun showEmptyData()

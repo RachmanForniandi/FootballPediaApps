@@ -3,7 +3,6 @@ package com.rachmanforniandi.footballpediaapps.MVPCore.FootballMatch
 import android.graphics.Color
 import android.graphics.PorterDuff
 import android.os.Bundle
-import android.os.PersistableBundle
 import android.support.v4.content.ContextCompat
 import android.support.v7.app.AppCompatActivity
 import android.support.v7.widget.LinearLayoutManager
@@ -24,7 +23,7 @@ import org.jetbrains.anko.*
 import org.jetbrains.anko.design.bottomNavigationView
 import org.jetbrains.anko.recyclerview.v7.recyclerView
 
-class FootballMatchActivity:AppCompatActivity(),FootballMatchView {
+class FootballMatchActivity:AppCompatActivity(), FootballMatchView {
 
     lateinit var presenter: FootballMatchPresenter
     lateinit var adapter: FootBallMatchAdapter
@@ -32,23 +31,21 @@ class FootballMatchActivity:AppCompatActivity(),FootballMatchView {
     lateinit var spinner: Spinner
     lateinit var progressBar: ProgressBar
     lateinit var recyclerView: RecyclerView
-
     lateinit var emptyDataStage: LinearLayout
+
     lateinit var league: LeaguesPerItem
 
-    var events:MutableList<EventsItem> = mutableListOf()
+    var events: MutableList<EventsItem> = mutableListOf()
 
     private val ID_BottomNav = 1
 
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
-        super.onCreate(savedInstanceState, persistentState)
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
 
         buildLayout()
         buildScopeArea()
         //loadFakeData()
     }
-
-
 
     override fun loadingView() {
         progressBar.visible()
@@ -69,6 +66,11 @@ class FootballMatchActivity:AppCompatActivity(),FootballMatchView {
     }
 
     override fun showLeagueList(data: LeagueFeedback) {
+//        data.leagues?.let {
+//            for(i in 0 until it.size) {
+//                league = LeaguesPerItem(data?.leagues?.get(i).idLeague, data?.leagues?.get(i).strLeague)
+//            }
+//        }
         spinner.adapter = ArrayAdapter(ctx,android.R.layout.simple_spinner_dropdown_item, data.leagues)
 
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
@@ -76,6 +78,7 @@ class FootballMatchActivity:AppCompatActivity(),FootballMatchView {
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 league = spinner.selectedItem as LeaguesPerItem
+                //Log.e("test", spinner.selectedItem.toString())
                 //presenter.getPreviousEvents(league.idLeague!!)
 
                 when(presenter.match){
@@ -87,10 +90,6 @@ class FootballMatchActivity:AppCompatActivity(),FootballMatchView {
     }
 
     override fun showPrevListEvent(data: List<EventsItem>) {
-        /*events.clear()
-        events.addAll(data)
-        adapter.notifyDataSetChanged()
-        recyclerView.scrollToPosition(0)*/
         showEventListData(data)
     }
 
@@ -103,13 +102,13 @@ class FootballMatchActivity:AppCompatActivity(),FootballMatchView {
         startActivity<DetailTeamActivity>(INTENT_TO_DETAIL to item)
     }
 
-    private fun buildLayout() {
+    fun buildLayout() {
         linearLayout {
             orientation = LinearLayout.VERTICAL
 
             linearLayout {
                 orientation = LinearLayout.VERTICAL
-                backgroundColor = Color.CYAN
+                backgroundColor = Color.GRAY
 
                 spinner = spinner {
                     padding = dip(16)
@@ -151,13 +150,14 @@ class FootballMatchActivity:AppCompatActivity(),FootballMatchView {
 
                 bottomNavigationView {
                     id = ID_BottomNav
-                    backgroundColor = Color.GRAY
+                    backgroundColor = Color.WHITE
 
                     menu.apply {
                         add("Previous Match")
                                 .setIcon(R.drawable.left_arrow)
                                 .setOnMenuItemClickListener {
                                     presenter.getPreviousEvents(league.idLeague!!)
+//                                    league?.idLeague?.let { presenter.getPreviousEvents(it) }
                                     false
                                 }
 
@@ -166,19 +166,20 @@ class FootballMatchActivity:AppCompatActivity(),FootballMatchView {
                                 .setOnMenuItemClickListener {
                                     //toast("Coming up next..")
                                     presenter.getNextEvents(league.idLeague!!)
+//                                    league?.idLeague?.let {presenter.getNextEvents(it)  }
                                     false
                                 }
                     }
                 }.lparams(matchParent, wrapContent){
                     alignParentBottom()
                 }
-            }.lparams(matchParent, matchParent)
+            }
         }
     }
 
     fun buildScopeArea() {
         presenter = FootballMatchPresenter(this)
-        adapter = FootBallMatchAdapter(events,{item:EventsItem ->itemClicked(item)})
+        adapter = FootBallMatchAdapter(events, {item:EventsItem ->itemClicked(item)})
 
         presenter.getAllArchiveLeagueInfo()
         recyclerView.adapter = adapter
@@ -191,17 +192,4 @@ class FootballMatchActivity:AppCompatActivity(),FootballMatchView {
         recyclerView.scrollToPosition(0)
     }
 
-    /*fun loadFakeData() {
-        for (i in 1..9) {
-            val item = EventsItem()
-            item.dateEvent = "2018-09-0${i}"
-            item.strHomeTeam = "Tottenham Hotspur"
-            item.strAwayTeam = "Liverpool"
-            item.intHomeScore = "1"
-            item.intAwayScore = "2"
-            item.strEvent = "Tottenham Hotspur vs Liverpool"
-            events.add(item)
-        }
-        adapter.notifyDataSetChanged()
-    }*/
 }

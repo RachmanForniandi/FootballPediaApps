@@ -16,7 +16,6 @@ import org.jetbrains.anko.*
 class FootBallMatchAdapter(val items:List<EventsItem>, val clickListener: (EventsItem)->Unit):
         RecyclerView.Adapter<FootBallMatchAdapter.ViewHolder>() {
 
-
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = ViewHolder(FootballClubUI().createView(AnkoContext.create(parent.context,parent)))
 
     override fun getItemCount()= items.size
@@ -24,7 +23,6 @@ class FootBallMatchAdapter(val items:List<EventsItem>, val clickListener: (Event
     override fun onBindViewHolder(holder: ViewHolder, position: Int){
         holder.bindItem(items[position],clickListener)
     }
-
 
     inner class ViewHolder(val view: View): RecyclerView.ViewHolder(view) {
 
@@ -93,6 +91,7 @@ class FootBallMatchAdapter(val items:List<EventsItem>, val clickListener: (Event
                                 textView{
                                     text = "vs"
                                 }
+
                                 textView {
                                     id = ID_AWAY_SCORE
                                     padding = dip(8)
