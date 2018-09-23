@@ -44,7 +44,6 @@ class FootballMatchActivity:AppCompatActivity(), FootballMatchView {
 
         buildLayout()
         buildScopeArea()
-        //loadFakeData()
     }
 
     override fun loadingView() {
@@ -66,11 +65,6 @@ class FootballMatchActivity:AppCompatActivity(), FootballMatchView {
     }
 
     override fun showLeagueList(data: LeagueFeedback) {
-//        data.leagues?.let {
-//            for(i in 0 until it.size) {
-//                league = LeaguesPerItem(data?.leagues?.get(i).idLeague, data?.leagues?.get(i).strLeague)
-//            }
-//        }
         spinner.adapter = ArrayAdapter(ctx,android.R.layout.simple_spinner_dropdown_item, data.leagues)
 
         spinner.onItemSelectedListener = object : AdapterView.OnItemSelectedListener{
@@ -78,8 +72,6 @@ class FootballMatchActivity:AppCompatActivity(), FootballMatchView {
 
             override fun onItemSelected(parent: AdapterView<*>?, view: View?, position: Int, id: Long) {
                 league = spinner.selectedItem as LeaguesPerItem
-                //Log.e("test", spinner.selectedItem.toString())
-                //presenter.getPreviousEvents(league.idLeague!!)
 
                 when(presenter.match){
                     1-> presenter.getPreviousEvents(league.idLeague!!)
@@ -191,5 +183,4 @@ class FootballMatchActivity:AppCompatActivity(), FootballMatchView {
         adapter.notifyDataSetChanged()
         recyclerView.scrollToPosition(0)
     }
-
 }
